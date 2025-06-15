@@ -8,7 +8,7 @@ export default function BookList() {
   useEffect(() => {
     const fetchbooks = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/books");
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/books`);
         setBooks(response.data);
         console.log(books);
       } catch (error) {
@@ -21,7 +21,7 @@ export default function BookList() {
   const HandleDeleteBook = async (id, e) => {
     console.log("here")
     try {
-      const response = await axios.delete("http://localhost:4000/books/" + id);
+      const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/books/` + id);
       console.log(response)
       navigate("/")
     } catch (error) {

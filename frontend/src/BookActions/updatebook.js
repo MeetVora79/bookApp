@@ -12,7 +12,7 @@ export default function UpdateBook() {
     useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/books/" + id);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/books/` + id);
           setName(response.data.name);
           setAmount(response.data.amount);
       } catch (error) {
@@ -27,7 +27,7 @@ export default function UpdateBook() {
     const HandleUpdateBook = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.put("http://localhost:4000/books/" + id, {
+            const response = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/books/` + id, {
                 amount,
             })
             console.log(response)
