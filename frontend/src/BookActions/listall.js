@@ -1,24 +1,35 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function BookList() {
-    const [books, setBooks] = useState([])
-    
-    useEffect(() => {
-        const fetchbooks = async () => {
-            try {
-                const response = await axios.get("http://localhost:4000/books")
-                setBooks(response.data)
-                console.log(books)
-            } catch(error) {
-                console.error("error fetching books:", error.response.data.error)
-            }
-        }
-        fetchbooks()
-    }, [])
+  const [books, setBooks] = useState([]);
+  const navigate = useNavigate()
+  useEffect(() => {
+    const fetchbooks = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/books");
+        setBooks(response.data);
+        console.log(books);
+      } catch (error) {
+        console.error("error fetching books:", error.response.data.error);
+      }
+    };
+    fetchbooks();
+  }, []);
 
-    return (
+  const HandleDeleteBook = async (id, e) => {
+    console.log("here")
+    try {
+      const response = await axios.delete("http://localhost:4000/books/" + id);
+      console.log(response)
+      navigate("/")
+    } catch (error) {
+      console.error("error deleting book:", error.response.data.error);
+    }
+  };
+
+  return (
     <div className="bg-white py-10 sm:py-10">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:text-center">
@@ -45,7 +56,23 @@ export default function BookList() {
                           </p>
                         </div>
                       </div>
-                   
+                      <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+                        <Link
+                          to={`/listbyid/${books._id}`}
+                          className="text-sm leading-6 text-gray-900"
+                        >
+                          See Details
+                        </Link>
+                        <Link
+                          to={`/updatebook/${books._id}`}
+                          className="text-sm leading-6 text-gray-900"
+                        >
+                          Update
+                        </Link>
+                        <Link className="text-sm leading-6 text-gray-900" onClick={() => HandleDeleteBook(books._id)}>
+                          Delete
+                        </Link>
+                      </div>
                     </li>
                   ))}
                 </ul>
